@@ -81,40 +81,30 @@ for more information about the usage and all available options we refer to the [
 
 #### \autoGenerate
 
-Big fuss over a <60 line Lua script (see [autogenerate.lua](https://raw.githubusercontent.com/Nooby4Ever/awesome-cookbook/master/autogenerate.lua)) but anyway... this LaTeX command will automatically generate `\begin{document}` environment in your main `.tex` file. It will sort the recipes alphabetically for each category individually, in order for this to work you must provide the following files:
-* Make a new folder (eg. `recipes/`) in the current directory of your `.tex` file and include:
-  * Add a `categories.txt` file: each line represents a category. They will be included in the given order. eg.
+Big fuss over a <80 line Lua script (see [autogenerate.lua](https://raw.githubusercontent.com/Nooby4Ever/awesome-cookbook/master/autogenerate.lua)) but anyway... this LaTeX command will automatically generate `\begin{document}` environment in your main `.tex` file. It will sort the recipes alphabetically for each category individually and sort the ingredients in the `energylist.tex`(if provided). In order for this to work you must provide the following files and put them in a new directory (eg. `recipes/`):
+* **Preface**: add a `preface.tex` file, this will include the provided `.tex` file between the TOC and the recipes. By default this file should only provide the `\begin{preface}` environment but you may add more chapters if you so desire. If this file is not provided the recipes will directly follow the TOC.
+* **Categories**: add a `categories.txt` file, each line represents a category. They will appear in the provided order in the cookbook . eg.
 ```
 Starters
 Main Courses
-Deserts
+Desserts
 ```
-(if this file is not provided no categories, nor recipes, will be added)
-  * For each category provide a folder with the identical name. All the `.tex` files inside will be included for that category, each file should probably represent 1 recipe. The recipes will be sorted on the their `.tex` file name **NOT** the`\recipe[<style>]{<name>}`. The name used within the recipe command may differ from your file name, eg. `tomato_soup.tex` and `\recipe{Tomato (Soup)}`.
-For example:
+(if this file is not provided no categories, nor recipes, will included in the cookbook)
+* For each category provide a folder with the identical name, eg. `Main Courses`. This folder will contain all the recipes (`.tex` files) for that category. They will be automatically **sorted on their filename**.
+* **Recipe**: make a new `.tex` file and place in a category's folder. Each file should only represent 1 recipe. The name used within the recipe command may differ from your file name, eg. `tomato_soup.tex` and `\recipe{Soup from tomatoes}`.
+* **Appendices**: create a new folder named `appendices`, all `.tex` files in this directory will be added as appendix (after the recipes). If not provided, or empty, no appendices will be added.
+* **Energy list**: you may specify an energy list by adding `energylist.tex` in the appendices folder. This file should only contain the energylist environment. The entries in the list will be automatically alphabetically sorted.
+
+This will result in a structure similar to this:
 ```
-./Starters/
-      tomato_soup.tex
-      chicken_soup.tex
-      ...
-./Main Courses/
-      lasagna.tex
-      pizza.tex
-      ...
-./Deserts/
-      pudding.tex
-      ...
-```
-  * Add a `preface.tex` file: this will load the provided `.tex` file between the TOC and the recipes. By default this file should only provide the `\begin{preface}` environment but you may add more chapters if you so desire. If this file is not provided the recipes will start right behind the TOC.
-  * A folder named `appendices`: all `.tex` files in this directory will be added as appendix after the recipes. If not provided, or empty, no appendices will be added.
-* Final result:
-```
+[template files]      (autogenerate.lua, awesome-coobook.cls, fontawesome.sty)
+[template folders]    (/fonts, /resources)
 your_cookbook.tex
 recipes/
-    categories.txt
-    preface.tex
-    appendices/
-      energy_list.tex
+    categories.txt    ......................... | Contains:
+    preface.tex                                 | Starters
+    appendices/                                 | Main Courses
+      energylist.tex                            | Desserts
     Starters/
       tomato_soup.tex
       chicken_soup.tex
@@ -123,22 +113,22 @@ recipes/
       lasagna.tex
       pizza.tex
       ...
-    Deserts/
+    Desserts/
       pudding.tex
       ...      
 ```
 
 It is rather straight forward, the [examples](#examples) use the `./recipes/` folder for this purpose. If something is not clear we refer to the examples as a guideline.
 
-**Why bother?** It makes your life easier because you do not have to edit your main `.tex` file ever, nor do you have to manually sort the recipes. It also allows people not familiar with LaTeX to easily add a new recipe by just making a new `my_recipe.tex` file and drop in in the right (category) folder. **Even granny could do that!** You could host your family cookbook on a cloud service (eg. dropbox, google drive, one drive, ...) so the whole family can contribute to the cookbook by adding reicpes!
+**Why bother?** It makes your life easier because you do not have to edit your main `.tex` file ever, nor do you have to manually sort the recipes. It also allows people not familiar with LaTeX to easily add a new recipe by just making a new `my_recipe.tex` file and drop in in the right (category) folder. **Even granny could do that!** This allows you to host your family cookbook on a cloud service (eg. dropbox, google drive, one drive, ...) so the whole family can contribute to the cookbook by adding reicpes!
 
-As mentioned before you are **not required** to use this command and may just add each recipe manually if you so desire.
+As mentioned before you are **not required** to use this command and may just add each recipe manually in your cookbook `.tex` file, if you so desire.
 
 ## <a name="contribute">Contribute
 
 Have you fixed a bug, added a new feature, improved the code or compatibility or anything else do not hesitate to fork and **make a PR!**
 
-I try to keep the `.cls` file rather small and clean (no dirty LaTeX hacks) so if you want to go ham on tikz and provide a whole new style (instead of just add another simple recipe header style) i suggest you to just fork the template. Otherwise the `.cls` file may become hard to read and adapt for other people.
+I try to keep the `.cls` file rather clean so if you want to go ham on tikz and provide a whole new style (instead of just add another simple recipe header style) i suggest you to just fork the template. Otherwise the `.cls` file may become hard to read and adapt for other people.
 
 Have you found a bug, or want a specific feature, and don't know how to fix/add it? Check if there is not already a similar issue opened and if not make a **new [issue](https://github.com/Nooby4Ever/awesome-cookbook/issues/new)!**
 

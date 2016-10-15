@@ -151,6 +151,10 @@
 \newrobustcmd*{\setFontDir}[1][fonts/]{\def\@fontdir{#1}}
 \setFontDir
 
+% Font directory
+\newrobustcmd*{\setImageDir}[1][./images/]{\def\@imagedir{#1}}
+\setImageDir
+
 % Recipes directory
 \newrobustcmd*{\setRecipesDir}[1][./recipes/]{\def\@recipesdir{#1}}
 \setRecipesDir
@@ -426,14 +430,8 @@
  /recipe/.is family, /recipe,
  % Here are the options that a user can pass
  default/.style = 
-  {style = \@headerstyle, fig1 = ./resources/placeholder.jpg, 
-  fig2 = ./resources/placeholder.jpg, fig3 = ./resources/placeholder.jpg,
-  fig4 = ./resources/placeholder.jpg, startleft = \@startleft},
+  {style = \@headerstyle, startleft = \@startleft},
  style/.estore in = \thestyle,
- fig1/.estore in = \thefig1,
- fig2/.estore in = \thefig2,
- fig3/.estore in = \thefig3,
- fig4/.estore in = \thefig4,
  startleft/.estore in = \dostartleft,
 }
 
@@ -455,7 +453,7 @@
 	fill=base,
 	minimum width=\paperwidth,
 	minimum height=3cm] at (midpoint) {};
-	\node [text=white,font=\fontsize{45}{0}\selectfont, align=left] at (midpoint) {#2};
+	\node [text=white,font=\fontsize{45}{0}\selectfont, align=left, text width=\textwidth] at (midpoint) {#2};
 	\draw[draw=awesome, line width=6pt] (midpoint)++(-\paperwidth/2, -1.5cm) -- ++(\paperwidth, 0);
  \end{tikzpicture}%
  }%
@@ -469,7 +467,7 @@
 	fill=base,
 	minimum width=\paperwidth,
 	minimum height=3cm] at (midpoint) {};
-	\node [text=white,font=\fontsize{45}{0}\selectfont, align=left] at (midpoint) {#2};
+	\node [text=white,font=\fontsize{45}{0}\selectfont, align=left, text width=\textwidth] at (midpoint) {#2};
 	\draw[draw=awesome, line width=6pt] (midpoint)++(-\paperwidth/2, -1.5cm) -- ++(\paperwidth, 0);
  \end{tikzpicture}%
  \vspace{0.2cm}
@@ -646,7 +644,7 @@
 }{%
 \end{multicolslongtable}%
 \end{multicols}%
-\end{minipage}%
+\end{minipage}
 }
 
 % The vertical variant (manual variant)
@@ -660,7 +658,8 @@
 \end{table}%
 }
 
-%TODO in ingredietnsc
+%This should only be used inside ingredientsc but to keep the code readable
+% i did not include in \newenvironment*{ingredientsc}.
 \newenvironment*{column}[1][]{%
 % single ingredient
 \newrobustcmd*{\ingredient}[3]{\textcolor{second}{##1} & \textcolor{second}{##2} & \textcolor{second}{##3}\\}
@@ -668,7 +667,7 @@
 \begin{subtable}[t]{.3\textwidth}%
 \centering
 \begin{flushleft}#1\end{flushleft}
-\begin{tabular}{r@{ } l p{\textwidth}}%
+\begin{tabular}{r@{ } l p{0.65\textwidth}}%
 }{%
 \end{tabular}%
 \vspace{-1em}% correct last \\ in the \ingredient command
@@ -732,11 +731,11 @@
  /recipefigure/.is family, /recipefigure,
  % Here are the options that a user can pass
  default/.style = 
- {style = background, height = 0.25, fig2 = ./resources/placeholder.jpg,
- fig3 = ./resources/placeholder.jpg, fig4 = ./resources/placeholder.jpg},
+ {style = background, height = 0.25, width = 3cm, fig2= "", fig3 = "", fig4 = ""},
  style/.estore in = \thestyle,
  height/.estore in = \theheight,
- fig2/.estore in = \thefig2,
+ width/.estore in = \thewidth,
+ fig2/.estore in = \thefig,
  fig3/.estore in = \thefig3,
  fig4/.estore in = \thefig4,
 }
@@ -747,7 +746,7 @@
 % background ...................................................................
 \expandafter\ifstrequal\expandafter{\thestyle}{background}{%
 \begin{tikzpicture}[remember picture, overlay]
-\node[opacity=0.5] at (current page.center) {\includegraphics{#2}};
+\node[opacity=0.5] at (current page.center) {\includegraphics{\@imagedir#2}};
 \end{tikzpicture}%
 }{}
 % fullpage .....................................................................
@@ -755,51 +754,46 @@
 \newpage
 \thispagestyle{empty}
 \begin{tikzpicture}[remember picture, overlay]
-\node at (current page.center) {\includegraphics{#2}};
+\node at (current page.center) {\includegraphics{\@imagedir#2}};
 \end{tikzpicture}
 \clearpage
 }{}
-% widefigure .....................................................................
-\expandafter\ifstrequal\expandafter{\thestyle}{widefigure}{%
+% widefigure ...................................................................
+\expandafter\ifstrequal\expandafter{\thestyle}{wide}{%
 \begin{figure}[h]
 \centering
-\includegraphics[height=\theheight\textheight]{#2}
+\makebox[\textwidth]{\includegraphics[height=\theheight\textheight]{\@imagedir#2}}
+\end{figure}
+}{}
+% crop .........................................................................
+\expandafter\ifstrequal\expandafter{\thestyle}{crop}{%
+\begin{figure}[h]
+\centering
+\makebox[\textwidth]{\ClipImage{\thewidth}{\theheight}{\@imagedir#2}}
 \end{figure}
 }{}
 % fullpage4 .....................................................................
 \expandafter\ifstrequal\expandafter{\thestyle}{fullpage4}{%
 \newpage
 \thispagestyle{empty}
-\newgeometry{left=0cm,bottom=0cm,top=0cm,bottom=0cm,footskip=0cm}
+\newgeometry{left=0cm,inner=0cm,margin=0cm,bottom=0cm,top=0cm,bottom=0cm,footskip=0cm}
 \begin{figure}[h]
 \begin{subfigure}[t]{\pagewidth}
-\centering
-\makebox[\pagewidth][c]{\ClipImage{\pagewidth}{0.32\pageheight}{#2}}
-%\ClipImage{\pagewidth}{0.32\pageheight}{\thefig4}
-%\includegraphics{#2}
+\ClipImage{\pagewidth}{0.32\pageheight}{\@imagedir#2}
 \end{subfigure}
-%\begin{subfigure}[l]{0.49\textwidth}
-%\centering
-%%\makebox[\textwidth][c]{\ClipImage{0.49\pagewidth}{0.25\pageheight}{#2}}
-%\makebox[0.49\textwidth][c]{\includegraphics{#2}}
-%\end{subfigure}
-%~
-%\begin{subfigure}[r]{0.49\textwidth}
-%\centering
-%%\makebox[\textwidth][c]{\ClipImage{0.49\pagewidth}{0.25\pageheight}{#2}}
-%\makebox[0.49\textwidth][c]{\includegraphics{#2}}
-%\end{subfigure}
+~
+\begin{subfigure}[l]{0.49\textwidth}
+\ClipImage{0.49\pagewidth}{0.32\pageheight}{\@imagedir#2}
+\end{subfigure}
+~
+\begin{subfigure}[r]{0.49\textwidth}
+\ClipImage{0.49\pagewidth}{0.32\pageheight}{\@imagedir#2}
+\end{subfigure}
+~
 \begin{subfigure}[b]{\pagewidth}
-\centering
-%\makebox[\textwidth][c]{\ClipImage{\pagewidth}{0.25\pageheight}{\thefig4}}
-\makebox[\textwidth][c]{\ClipImage{\pagewidth}{0.32\pageheight}{#2}}
+\ClipImage{\pagewidth}{0.32\pageheight}{\@imagedir#2}
 \end{subfigure}
 \end{figure}
-%\begin{tikzpicture}[remember picture, overlay]
-%\node[below=0cm] (header) at (current page.north) {\ClipImage{\pagewidth}{0.32\pageheight}{\thefig4}};
-%\node at (header.south) {\ClipImage{0.4\pagewidth}{0.32\pageheight}{\thefig4}};
-%\node[above=0cm] (footer) at (current page.south) {\ClipImage{\pagewidth}{0.32\pageheight}{\thefig4}};
-%\end{tikzpicture}
 \clearpage
 \restoregeometry
 }{}
