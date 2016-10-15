@@ -1,0 +1,22 @@
+# Fdb version 3
+["pdflatex"] 1476369948 "cookbook.tex" "cookbook.pdf" "cookbook" 1476369948
+  "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1471317721 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
+  "/usr/share/texmf-dist/fonts/tfm/public/cm/cmr10.tfm" 1471317719 1296 45809c5a464d5f32c8f98ba97c1bb47f ""
+  "/usr/share/texmf-dist/tex/generic/unicode-data/CaseFolding.txt" 1471317726 78161 e3fbf2f626f10070000fe66f3a2ff5ef ""
+  "/usr/share/texmf-dist/tex/generic/unicode-data/SpecialCasing.txt" 1471317726 16830 fea30f45a2f81ffa474fd984d297e2ea ""
+  "/usr/share/texmf-dist/tex/generic/unicode-data/UnicodeData.txt" 1471317726 1686443 dde25b1cf9bbb4ba1140ac12e4128b0b ""
+  "/usr/share/texmf-dist/tex/latex/base/bk11.clo" 1471317724 8147 071613f48164a91769d060c59fd275f7 ""
+  "/usr/share/texmf-dist/tex/latex/base/book.cls" 1471317724 22945 7df8250bf76418cf651c357d3631fbc3 ""
+  "/usr/share/texmf-dist/tex/latex/fontspec/fontspec.sty" 1471317724 1699 41a8dcd7126940efa254804d5311bbda ""
+  "/usr/share/texmf-dist/tex/latex/l3kernel/expl3-code.tex" 1471317724 689679 e146572371041b15f7f0cb49a6cbc969 ""
+  "/usr/share/texmf-dist/tex/latex/l3kernel/expl3.sty" 1471317724 10238 47b1600390b6a09ec63fa44b042e9805 ""
+  "/usr/share/texmf-dist/tex/latex/l3kernel/l3pdfmode.def" 1471317724 9817 2a0e97b2721dcf8bb2bb608e1d600374 ""
+  "/usr/share/texmf-dist/tex/latex/l3packages/xparse/xparse.sty" 1471317724 61846 f081f1a4b6b2ee9ccff101b890bd41dc ""
+  "/usr/share/texmf-dist/web2c/texmf.cnf" 1471317729 31669 df537245012f3e5f05bdc55644b7a3df ""
+  "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1471336085 7252863 c6df31184925dd53d9b7859d3cff1dc5 ""
+  "awesome-cookbook.cls" 1476368205 24851 4329174a509b3c362aabce4cbb098886 ""
+  "cookbook.aux" 1476369289 1868 074be2cbe1a2daf30d888e5ae11c482a ""
+  "cookbook.tex" 1476369948 2774 a1da2d409c1e490586d2be7933bf6ccf ""
+  (generated)
+  "cookbook.log"
+  "cookbook.pdf"
