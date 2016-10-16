@@ -72,6 +72,6 @@ function generateTex(searchfolder)
 	-- append Appendices
 	if file_exists(searchfolder.."appendices/") then
 			tex.print("\\beginAppendices")
-			search_tex("./recipes/appendices") 
+			search_tex(searchfolder.."appendices") 
 	end
 end
