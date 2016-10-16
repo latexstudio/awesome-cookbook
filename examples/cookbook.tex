@@ -38,8 +38,7 @@
 % another style for a specific recipy by using \recipe[<style>]{<name>}. If
 % the option is omitted this style specified with this command will be used.
 % Default: style1
-% Available: style1, style2, style3, ....
-%TODO
+% Available: style1, style2, style3, style4
 \setDefaultRecipeStyle[style1]
 
 % Specify wether, by default, the recipes should always start on the
@@ -82,7 +81,7 @@
 
 % Specify the headers (for translations)
 % Default: cookbook, Preface, Preparation, Ingredients, Alternatives, Notes,
-% 			Energy list, {Nutrient, kcal, kj}
+% 			Energy list, {Nutrient, kcal, kj}, {min, servings, kj, €, source}
 \nCookbook[cookbook]
 \nPreface[Preface]
 \nPreparation[Preparation]
@@ -90,7 +89,9 @@
 \nAlternatives[Alternatives]
 \nNotes[Notes]
 \nEnergy[Energy list]
-\nEnergyList{Nutrient}{kcal}{kj}
+\nEnergyList{Nutrient}{kcal}{kj}		% header for energy list (appendix)
+\nIcons{min}{servings}{kj}{€}{source}  % text under the icons, the 4th one is the
+% currency symbole
 
 
 %-------------------------------------------------------------------------------

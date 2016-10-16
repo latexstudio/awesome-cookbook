@@ -172,8 +172,10 @@
 \newrobustcmd*{\nNotes}[1][Notes]{\def\@notes{#1}}
 \newrobustcmd*{\nEnergy}[1][Energy list]{\def\@energy{#1}}
 \newrobustcmd*{\nEnergyList}[3]{\def\@energylist{#1}\def\@energyunit{#2}\def\@energyunitt{#3}}
+\newrobustcmd*{\nIcons}[5]{\def\@time{#1}\def\@servings{#2}\def\@energytext{#3}\def\@currency{#4}\def\@source{#5}}
 \nCookbook \nPreface \nPreparation \nIngredients \nAlternatives \nNotes \nEnergy
 \nEnergyList{Nutrient}{kcal}{kj}
+\nIcons{min}{servings}{kj}{€}{source}
 
 
 %-------------------------------------------------------------------------------
@@ -213,6 +215,22 @@
     \setlength{\cH}{(\rH-#2)*\ratio{\oW}{#1}}%
     \adjincludegraphics[width=#1,clip,trim=0 \cH{} 0 0]{#3}%
 }%
+}
+
+% The following command is needed, if more ingredients than preparation (steps) are inserted. In this case the \texttt{wrapfigure} package behaves in a strange way. The result is that the hint is also floating around the ingredients, although the "box" is already closed. This command repairs this effect.
+% It is taken from http://mizine.de/latex/wrapfigure-austricksen/.
+% Note: at the moment not used, depends what behaviour you want. To enable uncomment \wrapfill in the 
+% preparations environment.
+\newrobustcmd*{\wrapfill}[0]
+{% Bug fix for wrapfigure package
+    \par
+    \ifx\parshape\WF@fudgeparshape
+    \nobreak
+    \vskip-\baselineskip
+    \vskip\c@WF@wrappedlines\baselineskip
+    \allowbreak
+    \WFclear
+    \fi
 }
 
 
@@ -436,8 +454,7 @@
 }
 
 % Different header styles for a recipe
-% Available: style1, style2, style3, style4, style5
-%TODO
+% Available: style1, style2, style3, style4
 \newrobustcmd*{\recipe}[2][]{%
 \pgfkeys{/recipe, default, #1}%
 \expandafter\ifstrequal\expandafter{\dostartleft}{true}{\cleardoublepage}{\clearpage}
@@ -487,25 +504,6 @@
  \end{tikzpicture}
  \vspace{0.2cm}
  }{}
-% style5 .......................................................................
-\expandafter\ifstrequal\expandafter{\thestyle}{style5}{%
-  \begin{tikzpicture}[remember picture,overlay]
-	\coordinate [below=1.5cm] (midpoint) at (current page.north);
-	%
-	\node[anchor=base,
-	fill=base,
-	minimum width=\paperwidth,
-	minimum height=3cm] at (midpoint) {};
-	\node [text=white,font=\fontsize{45}{0}\selectfont, align=left] at (midpoint) {#2};;
- \end{tikzpicture}%
- \begin{tikzpicture}[remember picture]
-	\coordinate [below=6.5cm] (midpoint) at (current page.north);
-	%
-	%\node (img) at (midpoint) {\includegraphics[height=2cm]{./resources/icons/servings.png}};
-	\draw[draw=awesome, line width=6pt] (midpoint)++(-\paperwidth/2, -1.5cm) -- ++(\textwidth, 0);
- \end{tikzpicture}
- \vspace{0.2cm}
- }{}
 }
 
 
@@ -530,16 +528,19 @@
  /info/.is family, /info,
  % Here are the options that a user can pass
  default/.style = 
- {servings = 0, time = 0, energy = 0, energyunit = kJ, cost = 0, 
- currency = €, source = none, urlsource = none},
+ {servings = 0, time = 0, timeunit = min, energy = 0, energyunit = kJ, cost = 0, 
+ currency = €, source = none, urlsource = none, servingstext = servings, sourcetext = source},
  servings/.estore in = \theservings,
+ servingstext/.estore in = \theservingstext,
  time/.estore in = \thetime,
+ timeunit/.estore in = \thetimeunit,
  energy/.estore in = \theenergy,
  energyunit/.estore in = \theenergyunit,
  cost/.estore in = \thecost,
  currency/.estore in = \thecurrency,
  source/.estore in = \thesource,
  urlsource/.estore in = \theurlsource,
+ sourcetext/.estore in = \thesourcetext
 }
 
 % Information with icons, all are optional
@@ -550,14 +551,14 @@
 \ifdefstring{\thetime}{0}{}{%
 \begin{tikzpicture}
 \node (icon) at (0,0) {\includegraphics[width=\iconsize]{./resources/icons/time.png}};
-\node[align=left, right=\iconsize/2 + 0.15cm] (icon) {\thetime\space \\ \textbf{min}};
+\node[align=left, right=\iconsize/2 + 0.15cm] (icon) {\thetime\space \\ \textbf{\thetimeunit}};
 \end{tikzpicture}%
 }
 % Servings .....................................................................
 \ifdefstring{\theservings}{0}{}{%
 \begin{tikzpicture}
 \node (icon) at (0,0) {\includegraphics[width=\iconsize]{./resources/icons/servings.png}};
-\node[align=left, right=\iconsize/2 + 0.15cm] (icon) {\theservings\space \\ \textbf{servings}};
+\node[align=left, right=\iconsize/2 + 0.15cm] (icon) {\theservings\space \\ \textbf{\theservingstext}};
 \end{tikzpicture}%
 }
 % Energy .......................................................................
@@ -579,7 +580,7 @@
 \hfill
 \begin{tikzpicture}
 \node (icon) at (0,0) {\includegraphics[width=\iconsize]{./resources/icons/source.png}};
-\node[align=left, right=\iconsize/2 + 0.15cm] (icon) {\thesource\space \\ \textbf{source}};
+\node[align=left, right=\iconsize/2 + 0.15cm] (icon) {\thesource\space \\ \textbf{\thesourcetext}};
 \end{tikzpicture}%
 }
 % URLSource ....................................................................
@@ -591,21 +592,6 @@
 \end{tikzpicture}%
 }
 \end{minipage}%
-}
-
-% The following command is needed, if more ingredients than preparation (steps) are inserted. In this case the \texttt{wrapfigure} package behaves in a strange way. The result is that the hint is also floating around the ingredients, although the "box" is already closed. This command repairs this effect.
-% It is taken from \url{http://mizine.de/latex/wrapfigure-austricksen/}.
-%TODO
-\newcommand\wrapfill
-{% Bug fix for wrapfigure package
-    \par
-    \ifx\parshape\WF@fudgeparshape
-    \nobreak
-    \vskip-\baselineskip
-    \vskip\c@WF@wrappedlines\baselineskip
-    \allowbreak
-    \WFclear
-    \fi
 }
 
 % Ingredients ==================================================================
@@ -685,7 +671,6 @@
 }{%
 \end{enumerate}
 %\wrapfill
-%\WFclear
 \vspace{3mm}
 }
 
@@ -736,8 +721,8 @@
  height/.estore in = \theheight,
  width/.estore in = \thewidth,
  fig2/.estore in = \thefig,
- fig3/.estore in = \thefig3,
- fig4/.estore in = \thefig4,
+ fig3/.estore in = \thefigg,
+ fig4/.estore in = \thefiggg,
 }
 
 % Shows figures for the recipe
@@ -778,26 +763,29 @@
 \thispagestyle{empty}
 \newgeometry{left=0cm,inner=0cm,margin=0cm,bottom=0cm,top=0cm,bottom=0cm,footskip=0cm}
 \begin{figure}[h]
-\begin{subfigure}[t]{\pagewidth}
-\ClipImage{\pagewidth}{0.32\pageheight}{\@imagedir#2}
+\begin{subfigure}[!ht]{\pagewidth}
+\ClipImage{\pagewidth}{0.35\pageheight}{\@imagedir#2}
 \end{subfigure}
-~
-\begin{subfigure}[l]{0.49\textwidth}
-\ClipImage{0.49\pagewidth}{0.32\pageheight}{\@imagedir#2}
+
+\begin{subfigure}[l]{0.5\textwidth}
+\centering
+\ClipImage{0.49\pagewidth}{0.45\pageheight}{\@imagedir#2}
 \end{subfigure}
-~
-\begin{subfigure}[r]{0.49\textwidth}
-\ClipImage{0.49\pagewidth}{0.32\pageheight}{\@imagedir#2}
+\begin{subfigure}[r]{0.5\textwidth}
+\centering
+\ClipImage{0.49\pagewidth}{0.45\pageheight}{\@imagedir#2}
 \end{subfigure}
-~
-\begin{subfigure}[b]{\pagewidth}
-\ClipImage{\pagewidth}{0.32\pageheight}{\@imagedir#2}
+
+\vspace{-0.2165\pageheight}
+\begin{subfigure}[!hb]{\pagewidth}
+\ClipImage{\pagewidth}{0.35\pageheight}{\@imagedir#2}
 \end{subfigure}
 \end{figure}
 \clearpage
 \restoregeometry
 }{}
 }
+
 
 %-------------------------------------------------------------------------------
 %                Commands for the appendices

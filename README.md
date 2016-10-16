@@ -77,7 +77,7 @@ A basic recipe looks something like this, note none of the environments/commands
     \step Wait for about 10min and your tea is ready to drink!
 \end{preparation}
 ```
-for more information about the usage and all available options we refer to the [examples](#examples).
+for more information about the usage and all available options we refer to the [examples](#examples), the file [rumaki.tex](https://github.com/Nooby4Ever/awesome-cookbook/blob/master/examples/recipes/Starters/rumaki.tex) is annotated and can be seen as the documentation.
 
 #### \autoGenerate
 
@@ -115,7 +115,7 @@ recipes/
       ...
     Desserts/
       pudding.tex
-      ...      
+      ...
 ```
 
 It is rather straight forward, the [examples](#examples) use the `./recipes/` folder for this purpose. If something is not clear we refer to the examples as a guideline.
