@@ -21,7 +21,6 @@ There are several examples provided to get you up and running in no-time! For a 
 * [cookbook](https://raw.githubusercontent.com/Nooby4Ever/awesome-cookbook/master/examples/cookbook.pdf) - **A showcase for all available options and features which you can use.** This gives you a nice impression on how a cookbook made with awesome-cookbook could look like. The `cookbook.tex` file is annotated to explain what each option does and can be seen as the documentation.
 * [MWE auto](https://raw.githubusercontent.com/Nooby4Ever/awesome-cookbook/master/examples/MWE_auto.pdf) - Uses the same data (recipes) as the cookbook example but without any options set before the `\begin{document}` environment. This `.tex` file is really minimal.
 * [MWE manual](https://raw.githubusercontent.com/Nooby4Ever/awesome-cookbook/master/examples/MWE_manual.pdf) - Will look the same as `MWE auto` but does not use the autoGenerate functionally. Generally speaking you would want to use the autoGenerate feature because it makes your life easier.
-* [MWE custom](https://raw.githubusercontent.com/Nooby4Ever/awesome-cookbook/master/examples/MWE_manual.pdf) - This is for people that know LaTeX and want to customize the template, this does not use the "wrapper" commands so to speak. Your `.tex` file will look uglier and you must not forget to invoke a command but it gives you the most freedom this template has to offer. If you want to take it a step further you can edit the `awesome-cookbook.cls` file yourself. You would probably be particularly interested in the tikz cover page code, category title styling and recipe header styling. All are done in tikz. The `awesome-cookbook.cls` is fairly well annotated and should be rather easy to edit.
 
 FYI; MWE stands for: Minimal Working Example
 
@@ -78,6 +77,8 @@ A basic recipe looks something like this, note none of the environments/commands
 \end{preparation}
 ```
 for more information about the usage and all available options we refer to the [examples](#examples), the file [rumaki.tex](https://github.com/Nooby4Ever/awesome-cookbook/blob/master/examples/recipes/Starters/rumaki.tex) is annotated and can be seen as the documentation.
+
+If you want more control over the look you can edit the `awesome-cookbook.cls` file yourself, it is fairly well annotated and should be rather easy to edit.
 
 #### \autoGenerate
 
