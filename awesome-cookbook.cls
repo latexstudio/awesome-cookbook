@@ -152,7 +152,7 @@
 \setFontDir
 
 % Font directory
-\newrobustcmd*{\setImageDir}[1][./images/]{\def\@imagedir{#1}}
+\newrobustcmd*{\setImageDir}[1][./images/]{\graphicspath{{#1}}}
 \setImageDir
 
 % Recipes directory
@@ -731,7 +731,7 @@
 % background ...................................................................
 \expandafter\ifstrequal\expandafter{\thestyle}{background}{%
 \begin{tikzpicture}[remember picture, overlay]
-\node[opacity=0.5] at (current page.center) {\includegraphics{\@imagedir#2}};
+\node[opacity=0.5] at (current page.center) {\includegraphics{#2}};
 \end{tikzpicture}%
 }{}
 % fullpage .....................................................................
@@ -739,7 +739,7 @@
 \newpage
 \thispagestyle{empty}
 \begin{tikzpicture}[remember picture, overlay]
-\node at (current page.center) {\includegraphics{\@imagedir#2}};
+\node at (current page.center) {\includegraphics{#2}};
 \end{tikzpicture}
 \clearpage
 }{}
@@ -747,14 +747,14 @@
 \expandafter\ifstrequal\expandafter{\thestyle}{wide}{%
 \begin{figure}[h]
 \centering
-\makebox[\textwidth]{\includegraphics[height=\theheight\textheight]{\@imagedir#2}}
+\makebox[\textwidth]{\includegraphics[height=\theheight\textheight]{#2}}
 \end{figure}
 }{}
 % crop .........................................................................
 \expandafter\ifstrequal\expandafter{\thestyle}{crop}{%
 \begin{figure}[h]
 \centering
-\makebox[\textwidth]{\ClipImage{\thewidth}{\theheight}{\@imagedir#2}}
+\makebox[\textwidth]{\ClipImage{\thewidth}{\theheight}{#2}}
 \end{figure}
 }{}
 % fullpage4 .....................................................................
@@ -764,21 +764,21 @@
 \newgeometry{left=0cm,inner=0cm,margin=0cm,bottom=0cm,top=0cm,bottom=0cm,footskip=0cm}
 \begin{figure}[h]
 \begin{subfigure}[!ht]{\pagewidth}
-\ClipImage{\pagewidth}{0.35\pageheight}{\@imagedir#2}
+\ClipImage{\pagewidth}{0.35\pageheight}{#2}
 \end{subfigure}
 
 \begin{subfigure}[l]{0.5\textwidth}
 \centering
-\ClipImage{0.49\pagewidth}{0.45\pageheight}{\@imagedir#2}
+\ClipImage{0.49\pagewidth}{0.45\pageheight}{\thefig}
 \end{subfigure}
 \begin{subfigure}[r]{0.5\textwidth}
 \centering
-\ClipImage{0.49\pagewidth}{0.45\pageheight}{\@imagedir#2}
+\ClipImage{0.49\pagewidth}{0.45\pageheight}{\thefigg}
 \end{subfigure}
 
 \vspace{-0.2165\pageheight}
 \begin{subfigure}[!hb]{\pagewidth}
-\ClipImage{\pagewidth}{0.35\pageheight}{\@imagedir#2}
+\ClipImage{\pagewidth}{0.35\pageheight}{\thefiggg}
 \end{subfigure}
 \end{figure}
 \clearpage
